@@ -6,7 +6,7 @@ The second assignment is to learn to use containerisation with Docker to support
 
 This assignment has a Core &ndash; Completion &ndash; Challenge structure weighted 50% &ndash; 30% &ndash; 20% of the assignment mark. Each stage has greater task difficulty than the preceding stage, so you may expect to spend more time attempting Challenge tasks than completing the Core requirements. Some Completion and Challenge tasks may be best addressed at the beginning of the assignment rather than at the end, you are expected to read the brief and plan your work based on the requirements you choose to meet.
 
-You will need to have the Docker engine available to you for this assignment, either by installing Docker on your local machine or by using one of the ECS workstations. Using a package manager like Homebrew https://brew.sh (macOS) or APT (Debian/Ubuntu) is recommended for local installations, but manually downloading and running the Docker Desktop installing from <https://www.docker.com> is a viable alternative for all platforms. Not all ECS workstations have Docker available, you must use the workstations in Cotton [CO246](https://ecs.wgtn.ac.nz/cgi-bin/equip/room?location=CO246) from the console or via SSH.
+You will need to have the Docker engine available to you for this assignment, either by installing Docker on your local machine or by using one of the ECS workstations. Using a package manager like Homebrew <https://brew.sh> (macOS) or APT (Debian/Ubuntu) is recommended for local installations, but manually downloading and running the Docker Desktop installing from <https://www.docker.com> is a viable alternative for all platforms. Not all ECS workstations have Docker available, you must use the workstations in Cotton [CO246](https://ecs.wgtn.ac.nz/cgi-bin/equip/room?location=CO246) from the console or via SSH.
 
 ### Core Requirements
 
@@ -38,7 +38,7 @@ The first step is create and build a Docker image suitable for running pre-commi
 
 To fulfil the last requirement, you must use the Haskell Dockerfile Linter, Hadolint <https://github.com/hadolint/hadolint>, either installing locally (preferably with a package manager) _or_ by running Hadolint in a Docker container as described in the Hadolint README.
 
-If you choose to use `pip3` to install required packages in the Dockerfile (a wise choice) then you will likely find that the `pip3 install ... ` command fails with an "externally-managed-environment" error. This is due to a recent change in Python and has caught-out many. It's acceptable to brute-force the install with the `--break-system-packages` flag.
+If you choose to use `pip3` to install required packages in the Dockerfile (a wise choice) then you will likely find that the `pip3 install ...` command fails with an "externally-managed-environment" error. This is due to a recent change in Python and has caught-out many. It's acceptable to brute-force the install with the `--break-system-packages` flag.
 
 **Note:** it's recommended that you first create a Dockerfile which successfully runs pre-commit _without_ the Markdownlint hook and then add the Markdownlint hook to a known-working Docker image.
 
@@ -69,7 +69,7 @@ Now that the lint Docker image is in your GitLab Project's container registry, y
 
 One thing that is _highly_ desirable is to have the pre-commit cache persist between pipeline runs. Without caching, pre-commit will install its environment to the container _every_ time it is run. To cache the pre-commit files, a `cache` keyword is used in the example, taken from the pre-commit documentation <https://pre-commit.com/#gitlab-ci-example>. Note that the
 
-#### Definition of Done
+#### Definition of Done (CORE)
 
 You will meet the Core requirements when the `lint` job in your CI pipeline runs `pre-commit run --all-files` and passes.
 
@@ -173,13 +173,13 @@ The recommended way to do this is to run the WordPress and MySQL services in sep
 
 **There is only one specific requirement:** your containerised WordPress blog must be accessible from a web browser by visiting either <http://localhost:8000> or, equivalently, <http://127.0.0.1:8000>.
 
-#### Definition of Done
+#### Definition of Done (COMPLETION)
 
 When your WordPress site can be deployed directly from version control, i.e. from a `git clone` of your repository your containerised WordPress instance can be spun-up and visiting <http://localhost:8000> in a web browser shows blog posts (plural!) written by you, then you've reached Completion!
 
 **Note:** this assignment requires you to maintain your WordPress database under version control, i.e. to commit changes to the database to your repository alongside your source code. This is not necessarily best practice!
 
-### Challenges!
+### Challenges
 
 These are more advanced tasks focussed on good practice, automation and reliability. It is not necessary to complete all challenge tasks to receive full marks for this section, attempting one or two of the hardest challenges to a high standard, or achieving three or four of the easier challenges to high standard will earn full marks. There is significant uncertainty associated with these tasks: some challenge tasks may be easier than expected while others may be difficult or even impossible. If you can't complete a challenge within the time allocated don't worry, documenting your attempt and what you learned is most important.
 
@@ -215,12 +215,11 @@ Thus, in addition to an operating CI pipeline and a containerised WordPress inst
 
 1. The Methodological Advice is followed: work is planned; Issues contain descriptions, details and links; Merge Requests represent a coherent body of work and consequently will typically comprise more than one commit; Labels are used to effectively communicate work.
 
-1. The commit history on `main` shows squash commits of the form `type(scope): description (#X via !Y)`.<br/> GitLab hyperlinks the `#X` and `!Y` in its interface and these links will be used for assessment purposes. From the Methodological Advice: see <https://blog.carbonfive.com/always-squash-and-rebase-your-git-commits> for historic advocacy of this workflow.
+1. The commit history on `main` shows squash commits of the form `type(scope): description (#X via !Y)`. GitLab hyperlinks the `#X` and `!Y` in its interface and these links will be used for assessment purposes. From the Methodological Advice: see <https://blog.carbonfive.com/always-squash-and-rebase-your-git-commits> for historic advocacy of this workflow.
 
 1. Best practice, defined in the References section, has been followed: the Dockerfile will pass Hadolint tests and the "best practice" advice adopted and adapted to "good practice" for this assignment.
 
 The highest level of performance is a submission which shows _how_ and _why_ the working CI pipeline and containerised WordPress instance were achieved, allowing your work to be operated, maintained and extended by others.
-
 
 ## References
 
