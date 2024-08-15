@@ -1,0 +1,24 @@
+---
+image: python:3
+
+default:
+  tags:
+    - docker
+
+stages:
+  - lint
+
+####################################################
+# LINT STAGE
+####################################################
+
+lint:
+  stage: lint
+  image: $CI_REGISTRY_IMAGE:lint
+  variables:
+    PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
+  cache:
+    paths:
+      - ${PRE_COMMIT_HOME}
+  script:
+    - pre-commit run --all-files
