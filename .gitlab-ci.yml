@@ -1,12 +1,50 @@
 ---
-image: python:3
-
-default:
-  tags:
-    - docker
-
 stages:
+  - build
   - lint
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+
+####################################################
+# BUILD STAGE
+####################################################
+
+build_lint_image:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - mkdir -p /kaniko/.docker
+    - >
+      echo '{
+        "auths": {
+          "$CI_REGISTRY": {
+            "username": "$CI_REGISTRY_USER",
+            "password": "$CI_REGISTRY_PASSWORD"
+          }
+        }
+      }' > /kaniko/.docker/config.json
+    - |
+      DESTINATION_ARGS="--destination ${CI_REGISTRY_IMAGE}:lint"
+      DESTINATION_ARGS+=" --destination ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}"
+      DESTINATION_ARGS+=" --destination ${CI_REGISTRY_IMAGE}:latest"
+      if [ -n "${CI_COMMIT_TAG}" ]; then
+        DESTINATION_ARGS+=" --destination ${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}"
+      fi
+    - >
+      /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+      ${DESTINATION_ARGS}
+      --build-arg BUILDPLATFORM=linux/amd64
+      --build-arg TARGETPLATFORM=linux/amd64,linux/arm64
+      --customPlatform=linux/amd64,linux/arm64
+  rules:
+    - changes:
+        - Dockerfile
+        - .gitlab-ci.yml
 
 ####################################################
 # LINT STAGE
@@ -22,3 +60,5 @@ lint:
       - ${PRE_COMMIT_HOME}
   script:
     - pre-commit run --all-files
+  needs:
+    - build_lint_image
