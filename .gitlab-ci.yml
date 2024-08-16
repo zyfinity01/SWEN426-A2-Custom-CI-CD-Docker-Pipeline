@@ -41,8 +41,7 @@ build_lint_image:
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
       ${DESTINATION_ARGS}
       --build-arg BUILDPLATFORM=linux/amd64
-      --build-arg TARGETPLATFORM=linux/amd64,linux/arm64
-      --customPlatform=linux/amd64,linux/arm64
+      --build-arg TARGETPLATFORM=linux/amd64
   rules:
     - changes:
         - Dockerfile
