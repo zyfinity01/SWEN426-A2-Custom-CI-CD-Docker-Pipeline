@@ -1,4 +1,10 @@
-FROM ubuntu:24.04
+# Use a multi-arch base image
+FROM --platform=$BUILDPLATFORM ubuntu:24.04
+
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM"
+
 ENV TZ=Pacific/Auckland
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 ARG DEBIAN_FRONTEND=noninteractive
