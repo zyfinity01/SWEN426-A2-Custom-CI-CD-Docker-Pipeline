@@ -1,0 +1,34 @@
+services:
+  db:
+    image: mysql:5.7
+    container_name: mysql_db
+    volumes:
+      - ./wp-database.sql:/docker-entrypoint-initdb.d/wp-database.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: supersecretpassword
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: bananas
+    networks:
+      - wp_network
+
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress
+    ports:
+      - "8000:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: bananas
+      WP_HOME: http://localhost:8000
+      WP_SITEURL: http://localhost:8000
+    depends_on:
+      - db
+    networks:
+      - wp_network
+
+networks:
+  wp_network:
+    driver: bridge
