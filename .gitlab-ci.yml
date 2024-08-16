@@ -12,6 +12,8 @@ variables:
 
 build_lint_image:
   stage: build
+  tags:
+    - docker
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
@@ -52,6 +54,8 @@ build_lint_image:
 
 lint:
   stage: lint
+  tags:
+    - docker
   image: $CI_REGISTRY_IMAGE:lint
   variables:
     PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
